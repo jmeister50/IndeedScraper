@@ -3,11 +3,25 @@ import requests
 from bs4 import BeautifulSoup
 import config as cfg
 
-def SearchIndeed(keyword, salary, city):
+def SearchIndeed(keyword, salary, city, experience_level=None,distance=None):
 
 	page = 0
-	url = f"https://www.indeed.com/jobs?q={keyword}, {salary}&l={city}&start={page}"
-	print(url)
+	base_url = f"https://www.indeed.com/jobs?q={keyword},{salary}&l={city}&start={page}"
+
+	if experience_level != None:
+		url =  base_url + f"&explvl={experience_level}"
+		print(url)
+	else:
+		url = base_url
+		print(url)
+
+	if distance != None:
+		url =  base_url + f"&radius={distance}"
+		print(url)
+	else:
+		url = base_url
+		print(url)
+
 
 	# Request page raw html and open with bs4
 	r = requests.get(url)
@@ -62,4 +76,6 @@ def SearchIndeed(keyword, salary, city):
 
 if __name__ == '__main__':
 
-	SearchIndeed("Manager","60000", "Chicago")
+	# Search by keyword, salary, location, experience level, distance from desired location.
+
+	SearchIndeed("Manager","60000", "Chicago","entry_level","25")
